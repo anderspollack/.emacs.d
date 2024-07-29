@@ -157,13 +157,21 @@
   :after
   evil
   :config
-  (evil-collection-init))
-(evil-mode 1)
+  (evil-collection-init)
+  )
 (use-package evil-surround
   :after
   evil
   :config
-  (global-evil-surround-mode 1))
+  (global-evil-surround-mode 1)
+  )
+(use-package undo-fu
+  :after
+  evil
+  :custom
+  (evil-undo-system 'undo-fu)
+  )
+(evil-mode 1)
 
 ;; Git
 (use-package magit)
@@ -250,7 +258,7 @@
  ;; If there is more than one, they won't work right.
  '(helm-minibuffer-history-key "M-p")
  '(package-selected-packages
-   '(evil-surround rg projectile web-mode evil-collection evil general magit which-key rainbow-delimiters gruvbox-theme doom-modeline counsel auto-package-update)))
+   '(undo-fu evil-surround rg projectile web-mode evil-collection evil general magit which-key rainbow-delimiters gruvbox-theme doom-modeline counsel auto-package-update)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
