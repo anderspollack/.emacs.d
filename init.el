@@ -111,6 +111,7 @@
     "gg" 'magit-status
     "pa" 'projectile-add-known-project
     "pd" 'projectile-remove-known-project
+    "pi" 'projectile-invalidate-cache
     "pp" 'projectile-switch-project
     "wh" 'evil-window-left
     "wj" 'evil-window-down
