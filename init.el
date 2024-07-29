@@ -146,6 +146,7 @@
   (evil-want-fine-undo t)
   :hook
   (evil-mode . ders/evil-hook)
+  (git-commit-mode . evil-insert-state)
   :config
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
