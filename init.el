@@ -159,6 +159,11 @@
   :config
   (evil-collection-init))
 (evil-mode 1)
+(use-package evil-surround
+  :after
+  evil
+  :config
+  (global-evil-surround-mode 1))
 
 ;; Git
 (use-package magit)
