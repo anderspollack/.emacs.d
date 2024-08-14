@@ -23,6 +23,8 @@
 ;; File settings
 ;; Stop making "~"backup files
 (setq make-backup-files nil)
+;; Refresh buffers whenever files change on disk
+(global-auto-revert-mode)
 
 ;; Keyboard settings
 ;; Answer yes-or-no prompts with a "y"/"n"
