@@ -49,9 +49,14 @@
 ;; As of Emacs 29.1, use-package is included by default
 ;; Add MELPA Stable package repository
 (require 'package)
-(add-to-list 'package-archives 
-	     ;; '("melpa-stable" . "https://stable.melpa.org/packages/")
-	     '("melpa" . "https://melpa.org/packages/"))
+(setq package-archives
+      '(("gnu"     . "https://elpa.gnu.org/packages/")
+        ("melpa-stable" . "https://stable.melpa.org/packages/")
+        ("melpa"        . "https://melpa.org/packages/"))
+      package-archive-priorities
+      '(("melpa-stable" . 10)
+        ("gnu"     . 5)
+        ("melpa"        . 0)))
 ;; Set :ensure t for all use-package declarations to ensure they exist before using
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
