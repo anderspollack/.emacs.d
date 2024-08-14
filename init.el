@@ -273,7 +273,7 @@
  ;; If there is more than one, they won't work right.
  '(helm-minibuffer-history-key "M-p")
  '(package-selected-packages
-   '(undo-fu evil-surround rg projectile web-mode evil-collection evil general magit which-key rainbow-delimiters gruvbox-theme doom-modeline counsel auto-package-update)))
+   '(markdown undo-fu evil-surround rg projectile web-mode evil-collection evil general magit which-key rainbow-delimiters gruvbox-theme doom-modeline counsel auto-package-update)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
