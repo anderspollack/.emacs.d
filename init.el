@@ -158,6 +158,8 @@
 (use-package evil-collection
   :after
   evil
+  :custom
+  (evil-want-keybinding nil)
   :config
   (evil-collection-init)
   )
