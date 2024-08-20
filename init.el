@@ -191,7 +191,23 @@
 (evil-mode 1)
 
 ;; Git
-(use-package magit)
+(use-package magit
+  :custom
+  ;; Open standard magit status in current window
+  ;; See @kyleam's final suggested code snippet: https://github.com/magit/magit/issues/2541
+  (magit-display-buffer-function
+   (lambda (buffer)
+     (display-buffer
+      buffer (if (and (derived-mode-p 'magit-mode)
+                      (memq (with-current-buffer buffer major-mode)
+                            '(magit-process-mode
+                              magit-revision-mode
+                              magit-diff-mode
+                              magit-stash-mode
+                              magit-status-mode)))
+                 nil
+               '(display-buffer-same-window)))))
+  )
 
 ;; Completions
 ;; Replace C-x f (find-file), C-x b(view-buffer), M-x, and C-s
