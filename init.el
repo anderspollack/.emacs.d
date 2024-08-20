@@ -88,6 +88,14 @@
    :font "SF Mono"
    :height 140
    )
+  ;; set fixed-pitch font attributes
+  ;; emacs sometimes renders monospace stuff with a different `fixed-pitch` face. This makes it use the same as the default.
+  (set-face-attribute
+   'fixed-pitch
+   nil
+   :font "SF Mono"
+   :height 140
+   )
   ;; Install and enable gruvbox-theme
   (use-package gruvbox-theme
     :config
