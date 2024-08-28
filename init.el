@@ -271,6 +271,7 @@
   (web-mode-code-indent-offset 2)
   (web-mode-script-padding 0)
   (web-mode-style-padding 0)
+  (indent-tabs-mode nil)
   :config
   (add-to-list 'auto-mode-alist '("\\.cjs\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
