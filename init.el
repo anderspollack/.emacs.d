@@ -52,7 +52,7 @@
 (setq package-archives
       '(("gnu"     . "https://elpa.gnu.org/packages/")
         ("melpa-stable" . "https://stable.melpa.org/packages/")
-        ("melpa"        . "https://melpa.org/packages/"))
+        ("melpa"        . "http://melpa.org/packages/"))
       package-archive-priorities
       '(("melpa-stable" . 10)
         ("gnu"     . 5)
@@ -67,6 +67,12 @@
   (auto-package-update-hide-results t)
   :config
   (auto-package-update-maybe)
+  )
+
+;; Terminal-only settings
+(when (not window-system)
+  ;; disable menu bar
+  (menu-bar-mode -1)
   )
 
 ;; GUI-only settings (MacOS)
@@ -106,6 +112,11 @@
   ;; Use Command + Shift + w to delete frame
   (global-set-key (kbd "s-W") 'delete-frame)
   )
+
+;; Indent with tabs with Conf mode (i.e. NGINX configuration)
+(add-hook 'conf-mode-hook
+          (lambda ()
+            (setq indent-tabs-mode t)))
 
 ;; Vim keybindings
 (use-package general
@@ -192,6 +203,7 @@
 
 ;; Git
 (use-package magit
+  :pin melpa
   :custom
   ;; Open standard magit status in current window
   ;; See @kyleam's final suggested code snippet: https://github.com/magit/magit/issues/2541
@@ -291,6 +303,82 @@
   :pin "melpa-stable"
   )
 
+;; Treesitter
+;; see https://www.ovistoica.com/blog/2024-7-05-modern-emacs-typescript-web-tsx-config
+(use-package treesit
+  :ensure nil
+  :mode (
+         ("\\.cjs\\'" . typescript-ts-mode)
+         ("\\.Dockerfile\\'" . dockerfile-ts-mode)
+         ("\\.js\\'"  . typescript-ts-mode)
+         ("\\.json\\'" .  json-ts-mode)
+         ("\\.jsx\\'" . tsx-ts-mode)
+         ("\\.mjs\\'" . typescript-ts-mode)
+         ("\\.mts\\'" . typescript-ts-mode)
+         ("\\.ts\\'"  . typescript-ts-mode)
+         ("\\.tsx\\'" . tsx-ts-mode)
+         )
+  :preface
+  (defun ap/setup-install-grammars ()
+    "Install tree-sitter grammars if they are absent."
+    (interactive)
+    (dolist (grammar
+             '(
+               (bash "https://github.com/tree-sitter/tree-sitter-bash")
+               (c "https://github.com/tree-sitter/tree-sitter-c")
+               (cmake "https://github.com/uyha/tree-sitter-cmake")
+               (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+               (css . ("https://github.com/tree-sitter/tree-sitter-css" "v0.20.0"))
+               (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+               (go "https://github.com/tree-sitter/tree-sitter-go" "v0.20.0")
+               (html . ("https://github.com/tree-sitter/tree-sitter-html" "v0.20.1"))
+               (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript" "v0.21.2" "src"))
+               (json . ("https://github.com/tree-sitter/tree-sitter-json" "v0.20.2"))
+               (make "https://github.com/alemuller/tree-sitter-make")
+               (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+               (python . ("https://github.com/tree-sitter/tree-sitter-python" "v0.20.4"))
+               (toml "https://github.com/tree-sitter/tree-sitter-toml")
+               (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "tsx/src"))
+               (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "typescript/src"))
+               (yaml . ("https://github.com/ikatyang/tree-sitter-yaml" "v0.5.0"))
+               ))
+      (add-to-list 'treesit-language-source-alist grammar)
+      ;; Only install `grammar' if we don't already have it
+      ;; installed. However, if you want to *update* a grammar then
+      ;; this obviously prevents that from happening.
+      (unless (treesit-language-available-p (car grammar))
+        (treesit-install-language-grammar (car grammar)))))
+
+  ;; Optional, but recommended. Tree-sitter enabled major modes are
+  ;; distinct from their ordinary counterparts.
+  ;; You can remap major modes with `major-mode-remap-alist'. Note
+  ;; that this does *not* extend to hooks! Make sure you migrate them
+  ;; also
+  (dolist (mapping
+           '((python-mode . python-ts-mode)
+             (css-mode . css-ts-mode)
+             (typescript-mode . typescript-ts-mode)
+             (js-mode . typescript-ts-mode)
+             (js2-mode . typescript-ts-mode)
+             (c-mode . c-ts-mode)
+             (c++-mode . c++-ts-mode)
+             (c-or-c++-mode . c-or-c++-ts-mode)
+             (bash-mode . bash-ts-mode)
+             (css-mode . css-ts-mode)
+             (json-mode . json-ts-mode)
+             (js-json-mode . json-ts-mode)
+             (sh-mode . bash-ts-mode)
+             (sh-base-mode . bash-ts-mode)))
+    (add-to-list 'major-mode-remap-alist mapping))
+  :config
+  (ap/setup-install-grammars)
+  )
+
+;; LSP Mode
+(use-package
+  lsp-mode
+  )
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -298,7 +386,7 @@
  ;; If there is more than one, they won't work right.
  '(helm-minibuffer-history-key "M-p")
  '(package-selected-packages
-   '(markdown undo-fu evil-surround rg projectile web-mode evil-collection evil general magit which-key rainbow-delimiters gruvbox-theme doom-modeline counsel auto-package-update)))
+   '(treesit markdown undo-fu evil-surround rg projectile web-mode evil-collection evil general magit which-key rainbow-delimiters gruvbox-theme doom-modeline counsel auto-package-update)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
