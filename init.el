@@ -26,6 +26,9 @@
 ;; Refresh buffers whenever files change on disk
 (global-auto-revert-mode)
 
+;; Run emacs as a server
+(server-start)
+
 ;; Keyboard settings
 ;; Answer yes-or-no prompts with a "y"/"n"
 (setq use-short-answers t)
@@ -70,13 +73,13 @@
   )
 
 ;; Terminal-only settings
-(when (not window-system)
+(when (display-graphic-p)
   ;; disable menu bar
   (menu-bar-mode -1)
   )
 
-;; GUI-only settings (MacOS)
-(when (string= window-system "ns")
+;; GUI-only settings
+(when (display-graphic-p)
   ;; disable scrollbars
   (scroll-bar-mode -1)
   ;; disable tool bar
